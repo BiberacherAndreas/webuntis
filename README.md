@@ -1,6 +1,6 @@
-# Webuntis
+# WebUntis
 
-TODO: Write a gem description
+This gem makes calls to the [WebUntis][wu] JSON-RPC API.
 
 ## Installation
 
@@ -18,7 +18,18 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Using it should be quite easy.  For example, to print a list of all active
+teachers, you just do this:
+
+``` ruby
+require "webuntis"
+
+wu = WebUntis.new("demo_inf",  "student", "", server="demo.webuntis.com")
+wu.authorize
+wu.teachers.each do |teacher|
+  puts teacher["longName"] if teacher["active"]
+end
+```
 
 ## Contributing
 
@@ -27,3 +38,5 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+[wu]: http://www.grupet.at/en/produkte/webuntis/uebersicht_webuntis.php
