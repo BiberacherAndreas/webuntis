@@ -1,7 +1,6 @@
 require "webuntis/version"
 require "httparty"
 require "securerandom"
-require "pp"
 
 class WebUntis
   include HTTParty # http://www.youtube.com/watch?v=6Zbi0XmGtMw
@@ -41,6 +40,30 @@ class WebUntis
   end
   alias authorize authenticate
   alias login authenticate
+  
+  # Gets a list of teachers.  Requires Authentication.
+  # @return [Array] Array of hashes.
+  def teachers()
+    require_authentication!
+    options = make_options("getTeachers")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  alias get_teachers teachers
+  
+  # Gets a list of classes for the school year with ID +schoolyear+.
+  # @param schoolyear [Integer] The ID of the school year, whatever that could be.  Defaults to +nil+ (current schoolyear) 
+  # @return [Array] Array of hashes.
+  def classes(schoolyear=nil)
+    require_authentication!
+    options = make_options("getKlassen", (schoolyear.nil? ? {} : {schoolyear: schoolyear}))
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  alias get_classes classes
+  alias get_klassen classes
   
   # Ends the session.  Requires Authentication.
   def logout()
