@@ -19,8 +19,7 @@ class WebUntis
   # @param school [String] The school name (e.g. htl-stp)
   # @param user [String] The user name
   # @param password [String] The user's password
-  # @param server [String] The server to use, without +/WebUntis+ (e.g.
-  # demo.webuntis.com).
+  # @param server [String] The server to use, without +/WebUntis+ (e.g. demo.webuntis.com).
   def initialize(school, user, password, server="demo.webuntis.com")
     @school = school
     @user = user
