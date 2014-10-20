@@ -49,7 +49,6 @@ class WebUntis
     raise response["error"]["message"] unless response["error"].nil?
     response["result"]
   end
-  alias get_teachers teachers
   
   # Gets a list of classes for the school year with ID +schoolyear+.
   # @param schoolyear [Integer] The ID of the school year, whatever that could be.  Defaults to +nil+ (current schoolyear) 
@@ -61,8 +60,91 @@ class WebUntis
     raise response["error"]["message"] unless response["error"].nil?
     response["result"]
   end
-  alias get_classes classes
-  alias get_klassen classes
+  alias klassen classes
+  
+  # Gets a list of subjects. 
+  # @return [Array] Array of hashes.
+  def subjects()
+    require_authentication!
+    options = make_options("getSubjects")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets a list of rooms.
+  # @return [Array] Array of hashes.
+  def rooms()
+    require_authentication!
+    options = make_options("getRooms")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets a list of departments.
+  # @return [Array] Array of hashes.
+  def departments()
+    require_authentication!
+    options = make_options("getDepartments")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets a list of holidays.
+  # Dates are stored as an integer in the format yyyymmdd (e.g. 20141026)
+  # @return [Array] Array of hashes.
+  def holidays()
+    require_authentication!
+    options = make_options("getHolidays")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets the timegrid units.
+  # Times are stored as an integer in the format hhmm (e.g. 750, 1030)
+  # @return [Array] Array of hashes.
+  def timegrid()
+    require_authentication!
+    options = make_options("getTimegridUnits")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets information about lesson types, period codes and their colours.
+  # Lession types (lstypes): +ls+: lesson; +oh+: office hour; +sb+: standby;
+  # +bs+: break supervision; +ex+: examination
+  # @return [Array] Array of hashes.
+  def status_data()
+    require_authentication!
+    options = make_options("getStatusData")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets the current school year.
+  # @return [Hash] The current school year object as a hash.
+  def current_schoolyear()
+    require_authentication!
+    options = make_options("getCurrentSchoolyear")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
+  
+  # Gets all available school years.
+  # @return [Array] Array of hashes.
+  def schoolyears()
+    require_authentication!
+    options = make_options("getSchoolyears")
+    response = self.class.post("/WebUntis/jsonrpc.do;jsessionid=#{@session_id}?school=#{@school}", options)
+    raise response["error"]["message"] unless response["error"].nil?
+    response["result"]
+  end
   
   # Ends the session.  Requires Authentication.
   def logout()
